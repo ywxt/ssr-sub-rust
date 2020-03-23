@@ -1,5 +1,5 @@
 [package]
-name = "ssr-subscribe"
+name = "ssr-sub"
 version = "0.1.0"
 authors = ["ywxt <ywxtcwh@qq.com>"]
 edition = "2018"
@@ -7,3 +7,16 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+base64 = "0.11.0"
+
+# The core APIs, including the Serialize and Deserialize traits. Always
+# required when using Serde. The "derive" feature is only required when
+# using #[derive(Serialize, Deserialize)] to make Serde work with structs
+# and enums defined in your crate.
+serde = { version = "1.0", features = ["derive"] }
+
+# Each data format lives in its own crate; the sample code below uses JSON
+# but you may be using a different one.
+serde_json = "1.0"
+
+error-chain = "0.12.2"
