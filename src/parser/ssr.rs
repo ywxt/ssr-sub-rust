@@ -1,5 +1,5 @@
 use crate::error;
-use crate::parser::{parse_params, parse_path};
+use super::{parse_params, parse_path};
 use std::collections::HashMap;
 use std::convert::TryFrom;
 
@@ -42,7 +42,7 @@ impl TryFrom<&str> for SsrUrl {
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub struct SsrUrlConfig {
     pub server: String,
-    pub port: usize,
+    pub port: u16,
     pub protocol: String,
     pub method: String,
     pub obfs: String,

@@ -1,5 +1,6 @@
 mod parser;
 mod error;
+mod config;
 
 
 use std::error::Error;
@@ -9,10 +10,7 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 use std::result::Result::Ok;
 
-///
-///
-///
-///
+
 fn main() -> Result<(), Box<dyn Error>> {
     let ssrs = read_lines("ssr.txt")?;
     for s in ssrs {
