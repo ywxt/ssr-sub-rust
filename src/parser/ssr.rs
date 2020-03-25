@@ -76,7 +76,7 @@ impl TryFrom<&str> for SsrUrlConfig {
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let vec = parse_path(value)?;
-        Self::try_from(&vec[..])
+        Self::try_from(&vec)
     }
 }
 

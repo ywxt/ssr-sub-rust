@@ -4,5 +4,5 @@ use serde::{Deserialize, Serialize};
 pub struct LocalConfig {
     pub local_address: String,
     pub local_port: String,
-    pub udp: bool,
+    pub udp: Option<bool>,
 }
