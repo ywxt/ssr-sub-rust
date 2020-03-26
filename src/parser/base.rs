@@ -4,7 +4,7 @@ use std::collections::HashMap;
 pub fn parse_path(path: &str) -> error::Result<Vec<String>> {
     let paths: Vec<&str> = path.split(':').collect();
     if paths.len() != 6 {
-        return Err(error::ErrorKind::InvaildSsrPath(path.into()).into());
+        return Err(error::ErrorKind::InvalidSsrPath(path.into()).into());
     }
     // 密码解码
     match base64::decode_config(paths[5], base64::URL_SAFE_NO_PAD) {
@@ -14,9 +14,9 @@ pub fn parse_path(path: &str) -> error::Result<Vec<String>> {
                 config.push(password);
                 Ok(config)
             }
-            Err(_) => Err(error::ErrorKind::InvaildSsrPath(path.into()).into()),
+            Err(_) => Err(error::ErrorKind::InvalidSsrPath(path.into()).into()),
         },
-        Err(_) => Err(error::ErrorKind::InvaildSsrPath(path.into()).into()),
+        Err(_) => Err(error::ErrorKind::InvalidSsrPath(path.into()).into()),
     }
 }
 
@@ -27,14 +27,14 @@ pub fn parse_params(query: &str) -> error::Result<HashMap<String, String>> {
         .map(|param| {
             let group: Vec<_> = param.split('=').filter(|item| item.is_empty()).collect();
             if group.len() != 2 {
-                return Err(error::ErrorKind::InvaildSsrParam(query.into()).into());
+                return Err(error::ErrorKind::InvalidSsrParam(query.into()).into());
             }
             match base64::decode_config(&group[1], base64::URL_SAFE_NO_PAD) {
                 Ok(result) => match String::from_utf8(result) {
                     Ok(_) => Ok((group[0].to_string(), group[1].to_string())),
-                    Err(_) => Err(error::ErrorKind::InvaildSsrParam(query.into()).into()),
+                    Err(_) => Err(error::ErrorKind::InvalidSsrParam(query.into()).into()),
                 },
-                Err(_) => Err(error::ErrorKind::InvaildSsrParam(query.into()).into()),
+                Err(_) => Err(error::ErrorKind::InvalidSsrParam(query.into()).into()),
             }
         })
         .collect()

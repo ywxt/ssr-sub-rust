@@ -4,17 +4,17 @@ error_chain! {
 
     foreign_links {
         Io(::std::io::Error);
-        JsonFmt(::serde_json::error::Error);
+        JsonFmt(::serde_json::Error);
     }
 
     errors {
-        InvaildSsrUrl (url:String) {
+        InvalidSsrUrl (url:String) {
              display("无效的SSR链接: '{}'", url)
         }
-        InvaildSsrParam (params:String) {
+        InvalidSsrParam (params:String) {
              display("无效的SSR参数:{}", params)
         }
-        InvaildSsrPath(path:String) {
+        InvalidSsrPath(path:String) {
             display("无效的SSR路径:{}", path)
         }
     }

@@ -1,5 +1,5 @@
-use crate::error;
 use super::{parse_params, parse_path};
+use crate::error;
 use std::collections::HashMap;
 use std::convert::TryFrom;
 
@@ -18,7 +18,7 @@ impl TryFrom<&str> for SsrUrl {
 
     fn try_from(value: &str) -> error::Result<SsrUrl> {
         if !value.starts_with("ssr://") {
-            return Err(error::ErrorKind::InvaildSsrUrl(value.into()).into());
+            return Err(error::ErrorKind::InvalidSsrUrl(value.into()).into());
         }
         let (config, params) = match &value
             .trim_start_matches("ssr://")
@@ -26,14 +26,14 @@ impl TryFrom<&str> for SsrUrl {
             .collect::<Vec<_>>()[..]
         {
             &[v1, v2, ..] => (v1, v2),
-            _ => return Err(error::ErrorKind::InvaildSsrUrl(value.into()).into()),
+            _ => return Err(error::ErrorKind::InvalidSsrUrl(value.into()).into()),
         };
         Ok(Self {
             config: SsrUrlConfig::try_from(config).map_err(|_e| {
-                error::Error::from_kind(error::ErrorKind::InvaildSsrUrl(value.into()))
+                error::Error::from_kind(error::ErrorKind::InvalidSsrUrl(value.into()))
             })?,
             params: SsrUrlParams::try_from(params).map_err(|_e| {
-                error::Error::from_kind(error::ErrorKind::InvaildSsrUrl(value.into()))
+                error::Error::from_kind(error::ErrorKind::InvalidSsrUrl(value.into()))
             })?,
         })
     }
@@ -76,7 +76,7 @@ impl TryFrom<&str> for SsrUrlConfig {
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let vec = parse_path(value)?;
-        Self::try_from(&vec)
+        Self::try_from(&vec[..])
     }
 }
 
