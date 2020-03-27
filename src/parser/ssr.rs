@@ -2,6 +2,7 @@ use super::{parse_params, parse_path};
 use crate::error;
 use std::collections::HashMap;
 use std::convert::TryFrom;
+use std::str::FromStr;
 
 /// Ssr 链接
 /// ssr://server:port:protocol:method:obfs:password_base64/?params_base64
@@ -38,7 +39,13 @@ impl TryFrom<&str> for SsrUrl {
         })
     }
 }
+impl FromStr for SsrUrl {
+    type Err = error::Error;
 
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::try_from(s)
+    }
+}
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub struct SsrUrlConfig {
     pub server: String,
@@ -79,7 +86,13 @@ impl TryFrom<&str> for SsrUrlConfig {
         Self::try_from(&vec[..])
     }
 }
+impl FromStr for SsrUrlConfig {
+    type Err = error::Error;
 
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::try_from(s)
+    }
+}
 impl From<SsrUrlConfig> for String {
     fn from(value: SsrUrlConfig) -> Self {
         format!(
@@ -120,6 +133,14 @@ impl TryFrom<&str> for SsrUrlParams {
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let params = parse_params(value)?;
         Self::try_from(&params)
+    }
+}
+
+impl FromStr for SsrUrlParams {
+    type Err = error::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::try_from(s)
     }
 }
 

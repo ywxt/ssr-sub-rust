@@ -15,37 +15,66 @@ pub struct ConfigFile {
 
 impl ConfigFile {
     #[allow(dead_code)]
-    pub const DEFAULT_PATH: &'static str = ".ssr-sub/config.json";
+    pub const DEFAULT_NAME: &'static str = "config.json";
+    #[allow(dead_code)]
+    const APP_INFO: app_dirs2::AppInfo = app_dirs2::AppInfo {
+        name: "SsrSub",
+        author: "ywxt",
+    };
 
-    pub fn load<P: AsRef<Path>>(path: &P) -> error::Result<Self> {
+    pub fn load(path: &impl AsRef<Path>) -> error::Result<Self> {
         let file = File::open(path)?;
         let buffer = io::BufReader::new(file);
         let config: ConfigFile = serde_json::from_reader(buffer)?;
         Ok(config)
     }
-    /// load from `$HOME/`[`Self::DEFAULT_PATH`]
+    /// load from follows:
+    ///
+    /// - Windows: "%APPDATA%\SuperDev\CoolApp\config.json"
+    ///
+    ///     (e.g.: "C:\Users\Rusty\AppData\Roaming\SuperDev\CoolApp\config.json")
+    ///
+    /// - macOS: "$HOME/Library/Application Support/CoolApp/config.json"
+    ///
+    ///     (e.g.: "/Users/Rusty/Library/Application Support/CoolApp/config.json")
+    ///
+    /// - *nix: "$HOME/.config/CoolApp/config.json" (or "$XDG_CONFIG_HOME/CoolApp/config.json", if defined)
+    ///
+    ///     (e.g.: "/home/rusty/.config/CoolApp/config.json")
     pub fn load_default() -> error::Result<Self> {
         let path = Self::get_default_file_path()?;
         Self::load(&path)
     }
 
-    pub fn save<P: AsRef<Path>>(&self, path: &P) -> error::Result<()> {
+    pub fn save(&self, path: &impl AsRef<Path>) -> error::Result<()> {
         let mut file = File::create(path)?;
         let config = serde_json::to_vec_pretty(self)?;
         file.write(&config)?;
         Ok(())
     }
 
-    /// save to `$HOME/`[`Self::DEFAULT_PATH`]
+    /// save to follows:
+    ///
+    /// - Windows: "%APPDATA%\SuperDev\CoolApp\config.json"
+    ///
+    ///     (e.g.: "C:\Users\Rusty\AppData\Roaming\SuperDev\CoolApp\config.json")
+    ///
+    /// - macOS: "$HOME/Library/Application Support/CoolApp/config.json"
+    ///
+    ///     (e.g.: "/Users/Rusty/Library/Application Support/CoolApp/config.json")
+    ///
+    /// - *nix: "$HOME/.config/CoolApp/config.json" (or "$XDG_CONFIG_HOME/CoolApp/config.json", if defined)
+    ///
+    ///     (e.g.: "/home/rusty/.config/CoolApp/config.json")
     pub fn save_default(&self) -> error::Result<()> {
         let path = Self::get_default_file_path()?;
         self.save(&path)
     }
 
     fn get_default_file_path() -> io::Result<PathBuf> {
-        let mut path = dirs::home_dir().ok_or(io::Error::from(io::ErrorKind::NotFound))?;
-        path.push(Self::DEFAULT_PATH);
-
+        let mut path = app_dirs2::app_root(app_dirs2::AppDataType::UserConfig, &Self::APP_INFO)
+            .map_err(|_| io::Error::from(io::ErrorKind::NotFound))?;
+        path.push(Self::DEFAULT_NAME);
         Ok(path)
     }
 }

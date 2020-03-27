@@ -1,15 +1,14 @@
-mod parser;
-mod error;
 mod config;
-
+mod error;
+mod http;
+mod parser;
 
 use std::error::Error;
-use std::path::Path;
-use std::io;
 use std::fs::File;
-use std::io::{BufReader, BufRead};
+use std::io;
+use std::io::{BufRead, BufReader};
+use std::path::Path;
 use std::result::Result::Ok;
-
 
 fn main() -> Result<(), Box<dyn Error>> {
     let ssrs = read_lines("ssr.txt")?;
@@ -20,14 +19,16 @@ fn main() -> Result<(), Box<dyn Error>> {
         for s in s {
             if s.contains('_') {
                 //let s = s.replace('_', "+");
-                let s: String = String::from_utf8(base64::decode_config(&s, base64::URL_SAFE_NO_PAD)?)?;
+                let s: String =
+                    String::from_utf8(base64::decode_config(&s, base64::URL_SAFE_NO_PAD)?)?;
                 if !s.contains("/>") {
                     println!("error:{}", s);
                 } else {
                     println!("{}", s);
                 }
             } else {
-                let s: String = String::from_utf8(base64::decode_config(&s, base64::STANDARD_NO_PAD)?)?;
+                let s: String =
+                    String::from_utf8(base64::decode_config(&s, base64::STANDARD_NO_PAD)?)?;
                 if !s.contains("/?") {
                     println!("error:{}", s);
                 } else {
