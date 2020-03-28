@@ -39,6 +39,7 @@ impl TryFrom<&str> for SsrUrl {
         })
     }
 }
+
 impl FromStr for SsrUrl {
     type Err = error::Error;
 
@@ -46,6 +47,7 @@ impl FromStr for SsrUrl {
         Self::try_from(s)
     }
 }
+
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub struct SsrUrlConfig {
     pub server: String,
@@ -86,6 +88,7 @@ impl TryFrom<&str> for SsrUrlConfig {
         Self::try_from(&vec[..])
     }
 }
+
 impl FromStr for SsrUrlConfig {
     type Err = error::Error;
 
@@ -93,6 +96,7 @@ impl FromStr for SsrUrlConfig {
         Self::try_from(s)
     }
 }
+
 impl From<SsrUrlConfig> for String {
     fn from(value: SsrUrlConfig) -> Self {
         format!(

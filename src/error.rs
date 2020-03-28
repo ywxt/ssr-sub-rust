@@ -5,6 +5,7 @@ error_chain! {
     foreign_links {
         Io(::std::io::Error);
         JsonFmt(::serde_json::Error);
+        Http(::reqwest::Error);
     }
 
     errors {
