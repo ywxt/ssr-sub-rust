@@ -18,5 +18,8 @@ error_chain! {
         InvalidSsrPath(path:String) {
             display("无效的SSR路径:{}", path)
         }
+        InvalidSsrSubscription(content:String) {
+            display("无效的SSR订阅:{}", content)
+        }
     }
 }

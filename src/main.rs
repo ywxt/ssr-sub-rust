@@ -1,4 +1,6 @@
+mod command;
 mod config;
+mod console;
 mod error;
 mod http;
 mod parser;
