@@ -231,9 +231,9 @@ dependencies = [
 
 [[package]]
 name = "hermit-abi"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1010591b26bbfe835e9faeabeb11866061cc7dcebffd56ad7d0942d0e61aefd8"
+checksum = "0ebe6e23502442c4c9cd80fcb8bdf867dc5f4a9e9f1d882499fa49c5ed83e559"
 dependencies = [
  "libc",
 ]
@@ -358,9 +358,9 @@ dependencies = [
 
 [[package]]
 name = "lazing"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63ed9de6813e9e8ce2df596828f30bc9348444cfa4092177fc77c47e86998665"
+checksum = "f4989275494b5e8fa8a90da6ac03950cb347a1f464c2f77ef73044bd8990dd9d"
 dependencies = [
  "proc-macro2",
  "quote",

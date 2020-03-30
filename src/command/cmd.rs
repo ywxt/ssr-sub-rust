@@ -1,4 +1,6 @@
+use crate::error;
+
 pub trait Command {
     type Return;
-    fn run(&self) -> Self::Return;
+    fn run(&self) -> error::Result<Self::Return>;
 }
