@@ -26,3 +26,5 @@ app_dirs2 = "2.0"
 reqwest = { version = "0.10", features=["blocking"]}
 
 lazing = "0.1"
+
+clap ="2.33"
